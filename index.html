@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+    <head>
+        <title>index</title>
+    </head>
+    <style>
+        body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-image: url('https://wallpapercave.com/wp/wp5393145.jpg'); 
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        margin: 0;
+        padding: 20px;
+   
+
+        }
+
+    
+        h1 {
+            text-align: center;
+            color: white;
+        }
+       
+    
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        th, td {
+            padding: 12px 20px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            border-radius: 3px;
+        }
+    
+        th {
+            background-color: rgb(78, 78, 253);
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+    
+        
+          
+      
+    
+        a {
+            color:rgb(82, 82, 254);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .portfolio-header {
+  background-color: rgb(82, 82, 254);
+  color: #ffffff;
+  padding: 20px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Container centers the content */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Logo and title section */
+.logo-title {
+  display: flex;
+  align-items: center;
+}
+
+/* Logo image */
+.logo {
+  width: 60px;
+  height: 60px;
+  margin-right: 15px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Name/title */
+.logo-title h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+/* Subtitle or tagline */
+.tagline {
+  margin: 0;
+  font-size: 1rem;
+  color: #cccccc;
+}
+
+/* Navigation links */
+.nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  margin-left: 25px;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #00bcd4;
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    margin-top: 15px;
+    width: 100%;
+  }
+
+  .nav-links a {
+    display: inline-block;
+    margin: 10px 10px 0 0;
+  }
+}
+    </style>
+    
+    <body>
+        <header class="portfolio-header">
+            <div class="container">
+              <div class="logo-title">
+                <img src="Anuraag.jpg.webp" alt="Logo" class="logo" />
+                <div>
+                  <h1>Java Script</h1>
+                  <p class="tagline">Log Book By Anuraag Gurung</p>
+                </div>
+              </div>
+              <nav class="nav-links">
+                <a href="AboutMe.html">About me </a>
+                
+                <a href="contact.html">Contact</a>
+              </nav>
+            </div>
+        </header>
+        <table border="1" align="center" style="width:100%" style="height: 50%">
+        <tr>
+            <th>sl.no</th>
+            <th>description</th>
+            <th>name</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>todo list</td>
+            <td><nav><a href="todolist.html">Click here</a></nav></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>A simple form validator using JavaScript</td>
+            <td><nav><a href="form.html">Click here</a></nav></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Fetching posts from a JSON API</td>
+            <td><nav><a href="fetch.html">Click here</a></nav></td>
+        </tr>
+
+        <tr>
+            <td>3</td>
+            <td>weather report</td>
+            <td><nav><a href="weather_report.html">Click here</a></nav></td>
+        </tr>
+        </table>
+
+    </body>
+</html>
