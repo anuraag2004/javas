@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather Forecast</title>
+  <style>
+  /* Root base styling */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.4s, color 0.4s;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Neon Text Heading */
+.neon-text {
+  color: black;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Dark Mode */
+.dark-mode {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+/* Light Mode */
+.light-mode {
+  background-color: #f0f0f0;
+  color: #121212;
+}
+
+/* Toggle Switches */
+.slider-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  padding: 10px 20px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+/* Form Inputs */
+form input, select, button {
+  padding: 10px;
+  margin: 10px 10px 10px 0;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+}
+
+form input, select {
+  width: 150px;
+}
+
+.shadow__btn {
+  background-color: #1e90ff;
+  color: white;
+  box-shadow: 0 4px 15px rgba(30, 144, 255, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.shadow__btn:hover {
+  transform: scale(1.05);
+}
+
+/* Forecast Cards */
+#forecast > div {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+/* Image in Forecast */
+#forecast img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 600px) {
+  .slider-container {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  form input, select, button {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  #forecast > div {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  #forecast img {
+    margin: 0 auto 15px auto;
+  }
+}
+ 
+
+
+
+  </style>
+</head>
+<body class="dark-mode">
+  <div class="slider-container">
+    <label class="switch">
+      <input type="checkbox" id="modeSwitch" onchange="toggleMode()">
+      <span class="slider"></span>
+    </label>
+    <label class="switch">
+      <input type="checkbox" id="toggleInput" onchange="toggleInputFields()">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="container">
+    <h1 class="neon-text">Weather Forecast</h1>
+
+    <form id="locationForm" onsubmit="event.preventDefault(); getWeather();">
+      <div id="man">
+        <input type="number" id="latitude" placeholder="Latitude" required step="any">
+        <input type="number" id="longitude" placeholder="Longitude" required step="any">
+        <button class="shadow__btn" type="submit">Get Weather</button>
+      </div>
+
+      <select id="TownDropdown" onchange="handleTownChange()">
+        <option value="">Select a Town</option>
+        <option value="27.3314,88.6138">Gangtok</option>
+        <option value="27.2925,88.2537">Geyzing</option>
+        <option value="27.5005,88.5346">Mangan</option>
+        <option value="27.1364,88.3931">Singtam</option>
+      </select>
+    </form>
+
+    <div id="weatherResult" style="display: none;">
+      <p id="status"></p>
+      <div id="forecast"></div>
+    </div>
+  </div>
+
+  <script>
+    function toggleMode() {
+      if (document.getElementById("modeSwitch").checked) {
+        setLightMode();
+      } else {
+        setDarkMode();
+      }
+    }
+
+    function setDarkMode() {
+      document.body.classList.add("dark-mode");
+      document.body.classList.remove("light-mode");
+      localStorage.setItem('theme', 'dark-mode');
+    }
+
+    function setLightMode() {
+      document.body.classList.add("light-mode");
+      document.body.classList.remove("dark-mode");
+      localStorage.setItem('theme', 'light-mode');
+    }
+
+    window.onload = () => {
+      const savedTheme = localStorage.getItem('theme') || 'dark-mode';
+      if (savedTheme === 'light-mode') {
+        setLightMode();
+        document.getElementById("modeSwitch").checked = true;
+      } else {
+        setDarkMode();
+      }
+    };
+
+    function toggleInputFields() {
+      const isChecked = document.getElementById("toggleInput").checked;
+      document.getElementById("man").style.display = isChecked ? "none" : "flex";
+    }
+
+    function getWeather() {
+      const latitude = parseFloat(document.getElementById("latitude").value);
+      const longitude = parseFloat(document.getElementById("longitude").value);
+      if (!isNaN(latitude) && !isNaN(longitude)) {
+        fetchWeatherData(latitude, longitude);
+      } else {
+        document.getElementById("status").textContent = "Please enter valid latitude and longitude.";
+        document.getElementById("weatherResult").style.display = "none";
+      }
+    }
+
+    function handleTownChange() {
+      const isChecked = document.getElementById("toggleInput").checked;
+      const value = document.getElementById("TownDropdown").value;
+      if (value) {
+        const [lat, lon] = value.split(",");
+        document.getElementById("latitude").value = lat.trim();
+        document.getElementById("longitude").value = lon.trim();
+        if (isChecked) {
+          fetchWeatherData(lat.trim(), lon.trim());
+        }
+      }
+    }
+
+    function fetchWeatherData(latitude, longitude) {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=Asia/Kolkata`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.daily) {
+            displayWeather(data);
+          } else {
+            document.getElementById("status").textContent = "Weather data not available.";
+            document.getElementById("weatherResult").style.display = "none";
+          }
+        })
+        .catch(() => {
+          document.getElementById("status").textContent = "Error fetching weather data.";
+          document.getElementById("weatherResult").style.display = "none";
+        });
+    }
+
+    function displayWeather(data) {
+      const forecast = data.daily;
+      let forecastHTML = "";
+
+      const weatherConditions = {
+        0: { description: "Clear", image: "Images/ClearSky.gif" },
+        1: { description: "Partly cloudy", image: "Images/partly_cloudy.gif" },
+        3: { description: "Overcast", image: "Images/overcast.gif" },
+        45: { description: "Fog", image: "Images/cloudy.gif" },
+        53: { description: "Moderate rain", image: "Images/moderate_rain.gif" },
+        66: { description: "Freezing Rain", image: "Images/freezing_rain.gif" },
+        71: { description: "Snowfall", image: "Images/snowfall.gif" },
+        95: { description: "Thunderstorm", image: "Images/Thunderstorm.gif" },
+      };
+
+      forecast.time.forEach((date, index) => {
+        const tempMax = forecast.temperature_2m_max[index];
+        const tempMin = forecast.temperature_2m_min[index];
+        const precipitation = forecast.precipitation_sum[index];
+        const weatherCode = forecast.weathercode[index];
+        const condition = weatherConditions[weatherCode] || { description: "Clear", image: "Images/ClearSky.gif" };
+
+        forecastHTML += `
+          <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <img src="${condition.image}" alt="${condition.description}" 
+                 onError="this.onerror=null;this.src='fallback.gif';"
+                 style="width: 150px; height: 150px; margin-right: 50px;">
+            <div>
+              <p><strong>Date:</strong> ${date}</p>
+              <p><strong>Weather:</strong> ${condition.description}</p>
+              <p><strong>Max Temp:</strong> ${tempMax}°C | <strong>Min Temp:</strong> ${tempMin}°C</p>
+              <p><strong>Precipitation:</strong> ${precipitation} mm</p>
+            </div>
+          </div>
+        `;
+      });
+
+      document.getElementById("status").textContent = "Weather data fetched successfully!";
+      document.getElementById("forecast").innerHTML = forecastHTML;
+      document.getElementById("weatherResult").style.display = "block";
+    }
+  </script>
+</body>
+</html>

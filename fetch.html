@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fetch User Limit</title>
+</head>
+<Style>
+    .container {
+        width: 600px;
+        margin: auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    input, button {
+        padding: 8px;
+        margin: 10px 5px;
+    }
+
+    #second div {
+        background: #f0f0f0;
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+    }
+</style>
+
+
+
+
+</Style>
+<body>
+
+    <div class="container">
+        <h1>Fetch Posts</h1>
+        <input type="number" id="inp" placeholder="Enter limit">
+        <button onclick="GetData()">Fetch</button>
+        <div id="second"></div>
+    </div>
+
+    <script>
+        async function GetData() {
+            const target = document.getElementById("second");
+            const input = document.getElementById("inp");
+            const limit = input.value;
+            target.innerHTML = ""
+            const promise = await fetch(`https://jsonplaceholder.typicode.com/posts?_limit=${limit}`)
+
+                .then(res => res.json())
+                .then(data => {
+                    data.forEach(post => {
+                        const tempDiv = document.createElement("div");
+                        const temph4 = document.createElement("h4");
+                        const tempp = document.createElement("p");
+
+                        temph4.textContent = post.title;
+                        tempp.textContent = post.body;
+
+
+                        tempDiv.appendChild(temph4);
+                        tempDiv.appendChild(tempp);
+
+                        target.appendChild(tempDiv);
+                    });
+                });
+        }
+
+    </script>
+
+</body>
+
+</html>
